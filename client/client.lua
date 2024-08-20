@@ -5,6 +5,7 @@ local properties = {
         id = 1, -- Unique identifier for the property
         name = "Property 1", -- Name of the property
         coords = vector3(-778.2485, 299.2582, 85.75365), -- Coordinates for the property location
+        price = 500000, -- Price of the property
         interior = {
             ipl = "apa_v_mp_h_04_a", -- IPL (Interior Proxy Library) name for the interior
             coords = vector3(-781.9878, 323.6537, 176.8037), -- Coordinates for where it will tp player
@@ -17,46 +18,6 @@ local properties = {
     -- Add more properties as needed
 }
 
-local ownedProperties = {}
-local props = {}
-
-Citizen.CreateThread(function()
-    for _, property in pairs(properties) do
-        local blip = AddBlipForCoord(property.coords)
-        SetBlipSprite(blip, 375)
-        SetBlipDisplay(blip, 4)
-        SetBlipScale(blip, 0.8)
-        SetBlipColour(blip, 2)
-        SetBlipAsShortRange(blip, true)
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString(property.name)
-        EndTextCommandSetBlipName(blip)
-    end
-end)
-
-RegisterNetEvent('property:owned')
-AddEventHandler('property:owned', function(propertyId)
-    ownedProperties[propertyId] = true
-    if props[propertyId] then
-        DeleteObject(props[propertyId])
-        props[propertyId] = nil
-    end
-end)
-
-RegisterNetEvent('property:alreadyOwned')
-AddEventHandler('property:alreadyOwned', function()
-    -- Notify the player that the property is already owned
-end)
-
-RegisterNetEvent('property:sold')
-AddEventHandler('property:sold', function(propertyId)
-    ownedProperties[propertyId] = nil
-end)
-
-RegisterNetEvent('property:notOwner')
-AddEventHandler('property:notOwner', function()
-    -- Notify the player that they are not the owner
-end)
 
 Citizen.CreateThread(function()
     while true do
@@ -72,7 +33,7 @@ Citizen.CreateThread(function()
                         PlaceObjectOnGroundProperly(prop)
                         props[property.id] = prop
                     end
-                    DrawText3D(property.coords, "[E] Buy Property")
+                    DrawText3D(property.coords, string.format("[E] Buy Property - $%d", property.price))
                     if IsControlJustReleased(0, 38) then
                         TriggerServerEvent('property:buy', property.id)
                     end
@@ -87,6 +48,7 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
 
 Citizen.CreateThread(function()
     while true do
@@ -116,6 +78,7 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
 
 function ShowHelpNotification(msg)
     AddTextEntry('HelpNotification', msg)
