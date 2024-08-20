@@ -1,10 +1,13 @@
 fx_version 'cerulean'
 game 'gta5'
-
-client_scripts {
-    'client.lua'
-}
+description 'Standalone Homes'
+author 'The Andy Network'
+version '0.0.1'
 
 server_scripts {
-    'server.lua'
+	'server/server.lua'
+}
+
+client_scripts {
+	'client/client.lua'
 }
