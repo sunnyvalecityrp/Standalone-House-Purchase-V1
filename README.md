@@ -52,7 +52,7 @@ I welcome your feedback! If you encounter issues or have suggestions for improve
 **Future Developments:**
 
 - **Persistent Data Storage:** Working on saving player-purchased homes across sessions.
-- **Additional Features:** Exploring options like house customization and expanded interactions.
+- **Additional Features:** Pricing for homes to show a price on the purchase (this is almost finished, so release could be soon)
 
 ---
 
